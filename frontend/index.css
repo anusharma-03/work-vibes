@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap');
-@import url('./tailwind-extracted.css');
+@import "tailwindcss";
 
 /* =====================
    CSS VARIABLES
@@ -25,8 +25,6 @@
    RESET & BASE
 ===================== */
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
@@ -39,7 +37,11 @@ body {
     min-height: 100vh;
 }
 
-h1, h2, h3, h4, .brand-name {
+h1,
+h2,
+h3,
+h4,
+.brand-name {
     font-family: 'Outfit', sans-serif;
     font-weight: 800;
 }
@@ -49,7 +51,9 @@ a {
     color: inherit;
 }
 
-button, textarea, input {
+button,
+textarea,
+input {
     font-family: 'Inter', sans-serif;
 }
 
@@ -184,10 +188,21 @@ button, textarea, input {
     animation: fadeInSlide 0.5s ease both;
 }
 
-.timeline-item:nth-child(1) { animation-delay: 0.05s; }
-.timeline-item:nth-child(2) { animation-delay: 0.15s; }
-.timeline-item:nth-child(3) { animation-delay: 0.25s; }
-.timeline-item:nth-child(4) { animation-delay: 0.35s; }
+.timeline-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.timeline-item:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.timeline-item:nth-child(3) {
+    animation-delay: 0.25s;
+}
+
+.timeline-item:nth-child(4) {
+    animation-delay: 0.35s;
+}
 
 .timeline-dot {
     position: absolute;
@@ -561,13 +576,16 @@ button, textarea, input {
     width: 5px;
     height: 5px;
 }
+
 ::-webkit-scrollbar-track {
     background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.08);
     border-radius: 3px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.18);
 }
@@ -580,6 +598,7 @@ button, textarea, input {
         opacity: 0;
         transform: translateY(18px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -587,12 +606,21 @@ button, textarea, input {
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-30px); }
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-30px);
+    }
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .fa-spin {
@@ -606,9 +634,11 @@ button, textarea, input {
     .features-grid {
         grid-template-columns: 1fr 1fr;
     }
+
     .client-layout {
         grid-template-columns: 1fr;
     }
+
     .right-panel {
         width: 280px;
     }
@@ -619,25 +649,31 @@ button, textarea, input {
         width: 72px;
         padding: 20px 12px;
     }
+
     .sidebar .nav-text,
     .sidebar .brand-name {
         display: none;
     }
+
     .sidebar .nav-link i {
         margin-right: 0;
     }
+
     .sidebar .nav-link.active {
         padding-left: 14px;
         border-left: none;
         border-bottom: 3px solid var(--accent-purple);
     }
+
     .main-content {
         margin-left: 72px;
         padding: 28px;
     }
+
     .right-panel {
         display: none;
     }
+
     .hero-heading {
         font-size: 56px;
     }
@@ -647,26 +683,32 @@ button, textarea, input {
     .features-grid {
         grid-template-columns: 1fr;
     }
+
     .landing-header {
         padding: 20px 24px;
         flex-wrap: wrap;
         gap: 16px;
     }
+
     .hero-heading {
         font-size: 40px;
     }
+
     .mood-selector {
         gap: 10px;
     }
+
     .mood-btn {
         font-size: 32px;
         padding: 8px 10px;
     }
+
     .client-header {
         padding: 16px 20px;
         flex-wrap: wrap;
         gap: 12px;
     }
+
     .main-content {
         padding: 20px;
     }

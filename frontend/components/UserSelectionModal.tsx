@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { apiService } from '../services/apiService';
 
 interface UserSelectionModalProps {
   onClose?: () => void;
@@ -6,16 +7,28 @@ interface UserSelectionModalProps {
 }
 
 export function UserSelectionModal({ onClose, onConfirm }: UserSelectionModalProps) {
-  const users = [
-    "Shobhit", "Uday", "Pardeep", "Monika", "Prince Raj", "Nitin", 
-    "Amreek", "Gurdeep", "Tahir", "Tejwant", "Ayushi", "Rishu", 
-    "Prabhat", "Anupam", "Akshita", "Manpreet", "Rohit", "Vaibhav"
-  ];
+  const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [users, setUsers] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await apiService.getUsers();
+        setUsers(data);
+      } catch (error) {
+        console.error('Failed to fetch users');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all scale-100 flex flex-col max-h-[90vh]">
-        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+        <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-lg bg-rose-100 text-rose-600">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-user" aria-hidden="true">
@@ -40,31 +53,46 @@ export function UserSelectionModal({ onClose, onConfirm }: UserSelectionModalPro
         </div>
         <div className="p-6 overflow-y-auto flex-1">
           <div className="space-y-4">
-            <p className="text-sm text-gray-600">Enter your name or select from the list to personalize your status reports.</p>
-            <div className="relative">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true">
-                <path d="m21 21-4.34-4.34"></path>
-                <circle cx="11" cy="11" r="8"></circle>
-              </svg>
-              <input placeholder="Enter or search your name..." className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition-all font-medium" type="text" />
-            </div>
+            <p className="text-sm text-gray-600">Select your name from the list to personalize your status reports.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[40vh] overflow-y-auto mt-4">
-              {users.map(name => (
-                <button 
-                  key={name} 
-                  onClick={() => onConfirm?.(name)}
-                  className="flex items-center justify-between px-4 py-3 rounded-xl border text-gray-800 text-left transition-all border-gray-200 hover:border-rose-300 hover:bg-gray-50"
-                >
-                  <div className="flex flex-col"><span className="font-medium">{name}</span></div>
-                </button>
-              ))}
+              {isLoading ? (
+                <div className="col-span-full py-12 text-center text-gray-500">Loading team members...</div>
+              ) : users.length === 0 ? (
+                <div className="col-span-full py-12 text-center text-gray-500">
+                  <p>No team members found.</p>
+                  <p className="text-xs mt-1">Please add users in the Admin panel.</p>
+                </div>
+              ) : (
+                users.map(user => (
+                  <button 
+                    key={user._id} 
+                    onClick={() => setSelectedUser(user.name)}
+                    className={`flex items-center justify-between px-4 py-3 rounded-xl border text-gray-800 text-left transition-all ${
+                      selectedUser === user.name 
+                      ? 'border-rose-500 bg-rose-50 ring-2 ring-rose-200' 
+                      : 'border-gray-200 hover:border-rose-300 hover:bg-gray-50'
+                    }`}
+                  >
+                    <div className="flex flex-col">
+                      <span className={`font-medium ${selectedUser === user.name ? 'text-rose-700' : ''}`}>{user.name}</span>
+                    </div>
+                    {selectedUser === user.name && (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-rose-600"><polyline points="20 6 9 17 4 12"/></svg>
+                    )}
+                  </button>
+                ))
+              )}
             </div>
           </div>
         </div>
         <div className="p-6 border-t border-gray-100 bg-gray-50/50 flex justify-between items-center">
           <div className="ml-auto w-full flex justify-end">
-            <button className="flex items-center gap-2 px-6 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-rose-500/30">
-              Confirm
+            <button 
+              onClick={() => selectedUser && onConfirm?.(selectedUser)}
+              disabled={!selectedUser}
+              className="flex items-center gap-2 px-6 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-rose-500/30"
+            >
+              Confirm Selection
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-right" aria-hidden="true">
                 <path d="M5 12h14"></path>
                 <path d="m12 5 7 7-7 7"></path>
