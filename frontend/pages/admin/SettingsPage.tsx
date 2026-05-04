@@ -1,57 +1,69 @@
 import React from 'react';
 import { AdminLayout } from '../../components/admin/AdminLayout';
 
-export function SettingsPage({ navigate }: { navigate: (path: string) => void }) {
+export function SettingsPage() {
   return (
-    <AdminLayout currentPath="/status/admin/settings" navigate={navigate} title="Admin Settings">
-      <div className="max-w-3xl space-y-8">
-        <section className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-          <div className="p-6 border-b border-slate-800">
-            <h3 className="text-lg font-bold text-white">General Settings</h3>
-            <p className="text-sm text-slate-500">Manage your basic admin configurations.</p>
+    <AdminLayout title="Settings" subtitle="Configure system-wide admin preferences">
+      <div className="max-w-2xl space-y-6">
+        {/* General Settings */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-100">
+            <h3 className="text-sm font-semibold text-gray-900">General Settings</h3>
+            <p className="text-xs text-gray-500 mt-0.5">Manage your basic admin configurations.</p>
           </div>
-          <div className="p-6 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Site Name</label>
-                <input type="text" defaultValue="ReportPro" className="w-full bg-slate-800 border-none rounded-xl px-4 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-indigo-600" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Admin Email</label>
-                <input type="email" defaultValue="admin@reportpro.com" className="w-full bg-slate-800 border-none rounded-xl px-4 py-2 text-sm text-white outline-none focus:ring-2 focus:ring-indigo-600" />
-              </div>
-            </div>
-            
-            <div className="flex items-center justify-between p-4 bg-slate-800/50 rounded-xl">
+          <div className="p-6 space-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <p className="text-sm font-medium text-white">Maintenance Mode</p>
-                <p className="text-xs text-slate-500">Temporarily disable public access to the dashboard.</p>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5">Site Name</label>
+                <input
+                  type="text"
+                  defaultValue="ReportPro"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
               </div>
-              <div className="w-12 h-6 bg-slate-700 rounded-full relative cursor-pointer">
-                <div className="absolute left-1 top-1 w-4 h-4 bg-slate-400 rounded-full"></div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-600 mb-1.5">Admin Email</label>
+                <input
+                  type="email"
+                  defaultValue="admin@reportpro.com"
+                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+              <div>
+                <p className="text-sm font-medium text-gray-900">Maintenance Mode</p>
+                <p className="text-xs text-gray-500 mt-0.5">Temporarily disable public access to the dashboard.</p>
+              </div>
+              <div className="w-10 h-5 bg-gray-300 rounded-full relative cursor-pointer">
+                <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform" />
               </div>
             </div>
           </div>
-          <div className="p-6 bg-slate-950/50 flex justify-end">
-            <button className="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium rounded-xl transition-all">Save Changes</button>
+          <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+            <button className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors">
+              Save Changes
+            </button>
           </div>
-        </section>
+        </div>
 
-        <section className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden">
-          <div className="p-6 border-b border-slate-800">
-            <h3 className="text-lg font-bold text-white text-rose-500">Danger Zone</h3>
-            <p className="text-sm text-slate-500">Irreversible actions for your admin panel.</p>
+        {/* Danger Zone */}
+        <div className="bg-white rounded-xl shadow-sm border border-red-100 overflow-hidden">
+          <div className="px-6 py-4 border-b border-red-100">
+            <h3 className="text-sm font-semibold text-red-600">Danger Zone</h3>
+            <p className="text-xs text-gray-500 mt-0.5">Irreversible actions for your admin panel.</p>
           </div>
           <div className="p-6 flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-white">Purge System Logs</p>
-              <p className="text-xs text-slate-500">Delete all historical data and activity logs.</p>
+              <p className="text-sm font-medium text-gray-900">Purge System Logs</p>
+              <p className="text-xs text-gray-500 mt-0.5">Delete all historical data and activity logs permanently.</p>
             </div>
-            <button className="px-4 py-2 border border-rose-500/50 text-rose-500 hover:bg-rose-500 hover:text-white text-sm font-medium rounded-xl transition-all">
+            <button className="px-4 py-2 border border-red-300 text-red-600 hover:bg-red-50 text-sm font-semibold rounded-lg transition-colors">
               Purge All
             </button>
           </div>
-        </section>
+        </div>
       </div>
     </AdminLayout>
   );

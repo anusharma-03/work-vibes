@@ -16,19 +16,19 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
             <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <div className="group flex justify-between items-start">
                 <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">General Info</h2>
-                <button className="text-blue-600 hover:text-blue-700 font-medium text-sm transition-all opacity-0 group-hover:opacity-100">Clear</button>
+                <button className="text-rose-600 hover:text-rose-700 font-medium text-sm transition-all opacity-0 group-hover:opacity-100">Clear</button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Report Type</label>
-                  <select className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+                  <select className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-800 focus:ring-2 focus:ring-rose-500 outline-none transition-all">
                     <option value="Start of day (SOD)">SOD (Start of Day)</option>
                     <option value="End of day (EOD)">EOD (End of Day)</option>
                   </select>
                 </div>
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Date</label>
-                  <input className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all" type="date" defaultValue="2026-05-04" />
+                  <input className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-800 focus:ring-2 focus:ring-rose-500 outline-none transition-all" type="date" defaultValue="2026-05-04" />
                 </div>
               </div>
             </section>
@@ -36,7 +36,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
             <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-gray-800">Projects & Tasks</h2>
-                <button className="flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors">
+                <button className="flex items-center gap-1 text-rose-600 hover:text-rose-700 font-medium text-sm transition-colors">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-circle-plus" aria-hidden="true">
                     <circle cx="12" cy="12" r="10"></circle>
                     <path d="M8 12h8"></path>
@@ -85,7 +85,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
                               <path d="m9 12 2 2 4-4"></path>
                             </svg>
                           </div>
-                          <textarea id="task-input-bb4e8bbd-6de3-4188-bd03-c511623fcac4" placeholder="What did you work on?" rows="1" className="w-full bg-transparent border-b border-gray-100 text-gray-700 focus:border-blue-400 focus:outline-none resize-none overflow-hidden min-h-[36px] break-all"></textarea>
+                          <textarea id="task-input-bb4e8bbd-6de3-4188-bd03-c511623fcac4" placeholder="What did you work on?" rows="1" className="w-full bg-transparent border-b border-gray-100 text-gray-700 focus:border-rose-400 focus:outline-none resize-none overflow-hidden min-h-[36px] break-all"></textarea>
                           <button className="text-gray-300 hover:text-red-500 hover:bg-red-50 p-1 rounded transition-colors" title="Remove Task">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash2 lucide-trash-2" aria-hidden="true">
                               <path d="M10 11v6"></path>
@@ -97,7 +97,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
                           </button>
                         </div>
                       </div>
-                      <button className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md transition-colors mt-2">
+                      <button className="flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-2.5 py-1 rounded-md transition-colors mt-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus" aria-hidden="true">
                           <path d="M5 12h14"></path>
                           <path d="M12 5v14"></path>
@@ -107,7 +107,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
                     </div>
                   </div>
                 </div>
-                <button className="flex items-center gap-1 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors mt-4 pt-4 border-t border-gray-100">
+                <button className="flex items-center gap-1 text-rose-600 hover:text-rose-700 font-medium text-sm transition-colors mt-4 pt-4 border-t border-gray-100">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-circle-plus" aria-hidden="true">
                     <circle cx="12" cy="12" r="10"></circle>
                     <path d="M8 12h8"></path>

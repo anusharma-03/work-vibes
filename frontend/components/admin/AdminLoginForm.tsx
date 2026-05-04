@@ -23,7 +23,7 @@ export function AdminLoginForm({ navigate }: AdminLoginFormProps) {
             </svg>
             <input 
               placeholder="Enter username" 
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all" 
+              className="w-full pl-10 pr-4 py-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white placeholder-slate-500 focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition-all" 
               autoComplete="username" 
               required 
               type="text" 
@@ -39,7 +39,7 @@ export function AdminLoginForm({ navigate }: AdminLoginFormProps) {
             </svg>
             <input 
               placeholder="Enter password" 
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all" 
+              className="w-full pl-10 pr-4 py-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white placeholder-slate-500 focus:ring-2 focus:ring-rose-500 focus:border-transparent outline-none transition-all" 
               autoComplete="current-password" 
               required 
               type="password" 
@@ -49,7 +49,7 @@ export function AdminLoginForm({ navigate }: AdminLoginFormProps) {
       </div>
       <button 
         type="submit" 
-        className="mt-6 w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:bg-blue-800 disabled:cursor-not-allowed text-white font-medium flex items-center justify-center gap-2 transition-colors"
+        className="mt-6 w-full py-3 rounded-lg bg-rose-600 hover:bg-rose-500 disabled:bg-rose-800 disabled:cursor-not-allowed text-white font-medium flex items-center justify-center gap-2 transition-colors"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-log-in" aria-hidden="true">
           <path d="m10 17 5-5-5-5"></path>

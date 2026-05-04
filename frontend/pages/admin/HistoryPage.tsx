@@ -1,35 +1,67 @@
 import React from 'react';
 import { AdminLayout } from '../../components/admin/AdminLayout';
 
-export function HistoryPage({ navigate }: { navigate: (path: string) => void }) {
+export function HistoryPage() {
   const events = [
-    { type: 'Update', user: 'John Doe', target: 'Project Alpha', time: '10:45 AM', date: 'May 4, 2026', color: 'indigo' },
-    { type: 'Creation', user: 'Sarah Smith', target: 'New Team: Mobile', time: '09:30 AM', date: 'May 4, 2026', color: 'emerald' },
-    { type: 'Deletion', user: 'Admin', target: 'Obsolete Project X', time: '05:15 PM', date: 'May 3, 2026', color: 'rose' },
-    { type: 'Setting', user: 'Mike Johnson', target: 'System Notifications', time: '02:00 PM', date: 'May 3, 2026', color: 'amber' },
+    { user: 'Shobhit', action: 'submitted a status report', target: 'Loveable clone', time: '10:45 AM', date: 'May 4, 2026', type: 'Report' },
+    { user: 'Uday', action: 'updated project details', target: 'Inhouse-Backend', time: '09:30 AM', date: 'May 4, 2026', type: 'Update' },
+    { user: 'Admin', action: 'created a new team', target: 'Mobile Team', time: '05:15 PM', date: 'May 3, 2026', type: 'Create' },
+    { user: 'Pardeep', action: 'submitted a status report', target: 'Archer', time: '02:00 PM', date: 'May 3, 2026', type: 'Report' },
+    { user: 'Nitin', action: 'deleted a project', target: 'Old Project X', time: '11:20 AM', date: 'May 3, 2026', type: 'Delete' },
   ];
 
+  const typeColors: Record<string, string> = {
+    Report: 'bg-blue-50 text-blue-700',
+    Update: 'bg-amber-50 text-amber-700',
+    Create: 'bg-emerald-50 text-emerald-700',
+    Delete: 'bg-red-50 text-red-600',
+  };
+
   return (
-    <AdminLayout currentPath="/status/admin/history" navigate={navigate} title="Action History">
-      <div className="max-w-4xl">
-        <div className="space-y-12 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-800 before:to-transparent">
-          {events.map((event, i) => (
-            <div key={i} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full border border-slate-800 bg-slate-900 text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
-                <svg className="fill-current" viewBox="0 0 12 12" width="12" height="12"><path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7A1 1 0 0010.28 2.28z"></path></svg>
-              </div>
-              <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-xl group-hover:border-slate-700 transition-all">
-                <div className="flex items-center justify-between space-x-2 mb-1">
-                  <div className="font-bold text-white">{event.type}</div>
-                  <time className="font-mono text-xs text-indigo-500">{event.time}</time>
-                </div>
-                <div className="text-slate-400 text-sm mb-4">
-                  <span className="text-white font-medium">{event.user}</span> performed an action on <span className="text-white font-medium">{event.target}</span>.
-                </div>
-                <div className="text-xs text-slate-500 font-medium">{event.date}</div>
-              </div>
-            </div>
-          ))}
+    <AdminLayout title="History" subtitle="Complete log of all administrative actions">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-gray-50 border-b border-gray-200">
+              <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">S.No</th>
+              <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">User</th>
+              <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
+              <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Target</th>
+              <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Type</th>
+              <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Time</th>
+              <th className="px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {events.map((event, i) => (
+              <tr key={i} className="hover:bg-gray-50/70 transition-colors">
+                <td className="px-6 py-4 text-sm text-gray-400">{i + 1}</td>
+                <td className="px-6 py-4 text-sm font-semibold text-gray-900">{event.user}</td>
+                <td className="px-6 py-4 text-sm text-gray-600">{event.action}</td>
+                <td className="px-6 py-4 text-sm text-blue-600">{event.target}</td>
+                <td className="px-6 py-4">
+                  <span className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold ${typeColors[event.type]}`}>
+                    {event.type}
+                  </span>
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-500 font-mono">{event.time}</td>
+                <td className="px-6 py-4 text-sm text-gray-400">{event.date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="px-6 py-3.5 border-t border-gray-100 flex items-center justify-between">
+          <p className="text-sm text-gray-500">Showing 1 to 5 of 142</p>
+          <div className="flex items-center gap-1">
+            <button className="p-1.5 text-gray-400 disabled:opacity-30" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <span className="px-3 py-1 text-sm text-gray-600 font-medium">Page 1 of 29</span>
+            <button className="p-1.5 text-gray-400 hover:text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </AdminLayout>

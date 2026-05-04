@@ -13,7 +13,7 @@ export function StatusSidebar() {
             </svg>
           </div>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-blue-400">Live Preview</h2>
+            <h2 className="text-lg font-semibold text-rose-400">Live Preview</h2>
           </div>
           <div className="relative group">
             <div className="bg-gray-800 rounded-xl p-4 font-mono text-sm leading-relaxed text-gray-300 min-h-[400px] whitespace-pre-wrap border border-gray-700 break-all">
@@ -34,7 +34,7 @@ export function StatusSidebar() {
               <h2 className="text-lg font-semibold text-gray-800">Recent History</h2>
             </a>
             <div className="flex items-center gap-2">
-              <button className="p-1 text-gray-400 hover:text-blue-500 transition-colors" title="Refresh">
+              <button className="p-1 text-gray-400 hover:text-rose-500 transition-colors" title="Refresh">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-refresh-ccw" aria-hidden="true">
                   <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
                   <path d="M3 3v5h5"></path>
@@ -42,7 +42,7 @@ export function StatusSidebar() {
                   <path d="M16 16h5v5"></path>
                 </svg>
               </button>
-              <a className="p-1 text-gray-400 hover:text-blue-500 transition-colors" title="View full history" href="/status/history" data-discover="true">
+              <a className="p-1 text-gray-400 hover:text-rose-500 transition-colors" title="View full history" href="/status/history" data-discover="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-history" aria-hidden="true">
                   <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
                   <path d="M3 3v5h5"></path>

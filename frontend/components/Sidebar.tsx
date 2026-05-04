@@ -14,8 +14,8 @@ export function Sidebar({ activePage, navigate }: SidebarProps) {
   ];
 
   const projects = [
-    { color: '#8b5cf6', label: 'Zenova Rebrand' },
-    { color: '#3b82f6', label: 'Solaris App' },
+    { color: '#e11d48', label: 'Zenova Rebrand' },
+    { color: '#f59e0b', label: 'Solaris App' },
   ];
 
   return (
@@ -67,7 +67,7 @@ export function Sidebar({ activePage, navigate }: SidebarProps) {
       </nav>
 
       {/* Bottom Mood Widget */}
-      <div className="glass-card" style={{ padding: '16px', background: 'rgba(139, 92, 246, 0.1)', marginTop: 'auto', borderColor: 'rgba(139, 92, 246, 0.2)' }}>
+      <div className="glass-card" style={{ padding: '16px', background: 'rgba(225, 29, 72, 0.05)', marginTop: 'auto', borderColor: 'rgba(225, 29, 72, 0.15)' }}>
         <p style={{ fontSize: '13px', marginBottom: '8px', color: 'var(--text-secondary)' }}>Workspace Mood</p>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontSize: '24px' }}>🔥</span>
