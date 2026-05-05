@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { AdminLayout } from '../../components/admin/AdminLayout';
-import { useNavigate } from 'react-router-dom';
-import { apiService } from '../../services/apiService';
+import { apiService } from '../../../src/services/apiService';
 import toast, { Toaster } from 'react-hot-toast';
 
 export function UsersPage() {
-  const navigate = useNavigate();
   const [users, setUsers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);

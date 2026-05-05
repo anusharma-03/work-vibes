@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiService } from '../services/apiService';
+import { apiService } from '../../src/services/apiService';
 
 interface UserSelectionModalProps {
   onClose?: () => void;
@@ -41,7 +41,7 @@ export function UserSelectionModal({ onClose, onConfirm }: UserSelectionModalPro
               <p className="text-xs text-gray-500">Step 1 of 2</p>
             </div>
           </div>
-          <button 
+          <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors p-1 hover:bg-gray-100 rounded-full"
           >
@@ -64,20 +64,19 @@ export function UserSelectionModal({ onClose, onConfirm }: UserSelectionModalPro
                 </div>
               ) : (
                 users.map(user => (
-                  <button 
-                    key={user._id} 
+                  <button
+                    key={user._id}
                     onClick={() => setSelectedUser(user.name)}
-                    className={`flex items-center justify-between px-4 py-3 rounded-xl border text-gray-800 text-left transition-all ${
-                      selectedUser === user.name 
-                      ? 'border-rose-500 bg-rose-50 ring-2 ring-rose-200' 
-                      : 'border-gray-200 hover:border-rose-300 hover:bg-gray-50'
-                    }`}
+                    className={`flex items-center justify-between px-4 py-3 rounded-xl border text-gray-800 text-left transition-all ${selectedUser === user.name
+                        ? 'border-rose-500 bg-rose-50 ring-2 ring-rose-200'
+                        : 'border-gray-200 hover:border-rose-300 hover:bg-gray-50'
+                      }`}
                   >
                     <div className="flex flex-col">
                       <span className={`font-medium ${selectedUser === user.name ? 'text-rose-700' : ''}`}>{user.name}</span>
                     </div>
                     {selectedUser === user.name && (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-rose-600"><polyline points="20 6 9 17 4 12"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-rose-600"><polyline points="20 6 9 17 4 12" /></svg>
                     )}
                   </button>
                 ))
@@ -87,7 +86,7 @@ export function UserSelectionModal({ onClose, onConfirm }: UserSelectionModalPro
         </div>
         <div className="p-6 border-t border-gray-100 bg-gray-50/50 flex justify-between items-center">
           <div className="ml-auto w-full flex justify-end">
-            <button 
+            <button
               onClick={() => selectedUser && onConfirm?.(selectedUser)}
               disabled={!selectedUser}
               className="flex items-center gap-2 px-6 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-rose-500/30"

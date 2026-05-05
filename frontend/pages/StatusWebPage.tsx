@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StatusHeader } from '../components/StatusHeader';
 import { StatusSidebar } from '../components/StatusSidebar';
 import { UserSelectionModal } from '../components/UserSelectionModal';
-import { apiService } from '../services/apiService';
+import { apiService } from '../../src/services/apiService';
 import toast, { Toaster } from 'react-hot-toast';
 
 export function StatusWebPage({ navigate }: { navigate?: (path: string) => void }) {
@@ -94,13 +94,13 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
     <div className="status-page-wrapper">
       <Toaster position="top-right" />
       <div className="min-h-screen pb-12">
-        <StatusHeader 
-          navigate={navigate} 
-          userName={userName} 
+        <StatusHeader
+          navigate={navigate}
+          userName={userName}
           onChangeUser={() => {
             localStorage.removeItem('selectedUser');
             setShowModal(true);
-          }} 
+          }}
         />
 
         <main className="max-w-[88%] mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -109,7 +109,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
             <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <div className="group flex justify-between items-start">
                 <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">General Info</h2>
-                <button 
+                <button
                   onClick={() => {
                     setProjects([{ name: '', tasks: [''] }]);
                     setReportType('SOD');
@@ -122,7 +122,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Report Type</label>
-                  <select 
+                  <select
                     value={reportType}
                     onChange={(e) => setReportType(e.target.value)}
                     className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-800 focus:ring-2 focus:ring-rose-500 outline-none transition-all"
@@ -133,11 +133,11 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
                 </div>
                 <div className="space-y-1">
                   <label className="text-xs font-bold text-gray-500 uppercase tracking-wider">Date</label>
-                  <input 
+                  <input
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-800 focus:ring-2 focus:ring-rose-500 outline-none transition-all" 
-                    type="date" 
+                    className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2.5 text-gray-800 focus:ring-2 focus:ring-rose-500 outline-none transition-all"
+                    type="date"
                   />
                 </div>
               </div>
@@ -146,7 +146,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
             <section className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-gray-800">Projects & Tasks</h2>
-                <button 
+                <button
                   onClick={addProject}
                   className="flex items-center gap-1 text-rose-600 hover:text-rose-700 font-medium text-sm transition-colors"
                 >
@@ -164,7 +164,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
                     <div className="space-y-4">
                       <div className="space-y-1">
                         <label className="text-xs font-bold text-gray-400 uppercase">Project Name</label>
-                        <input 
+                        <input
                           value={project.name}
                           onChange={(e) => updateProjectName(pIndex, e.target.value)}
                           placeholder="Enter project name..."
@@ -182,16 +182,16 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
                                   <path d="m9 12 2 2 4-4"></path>
                                 </svg>
                               </div>
-                              <textarea 
+                              <textarea
                                 value={task}
                                 onChange={(e) => updateTaskValue(pIndex, tIndex, e.target.value)}
-                                placeholder="What did you work on?" 
-                                rows={1} 
+                                placeholder="What did you work on?"
+                                rows={1}
                                 className="w-full bg-transparent border-b border-gray-100 text-gray-700 focus:border-rose-400 focus:outline-none resize-none overflow-hidden min-h-[36px] break-all"
                               />
-                              <button 
+                              <button
                                 onClick={() => removeTask(pIndex, tIndex)}
-                                className="text-gray-300 hover:text-red-500 hover:bg-red-50 p-1 rounded transition-colors" 
+                                className="text-gray-300 hover:text-red-500 hover:bg-red-50 p-1 rounded transition-colors"
                                 title="Remove Task"
                               >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash-2" aria-hidden="true">
@@ -205,7 +205,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
                             </div>
                           ))}
                         </div>
-                        <button 
+                        <button
                           onClick={() => addTask(pIndex)}
                           className="flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-2.5 py-1 rounded-md transition-colors mt-2"
                         >
@@ -257,7 +257,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
               </div>
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-rose-400">Live Preview</h2>
-                <button 
+                <button
                   onClick={() => {
                     navigator.clipboard.writeText(generateLivePreview());
                     toast.success('Copied to clipboard!');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AdminLayout } from '../../components/admin/AdminLayout';
 import { useNavigate } from 'react-router-dom';
-import { apiService } from '../../services/apiService';
+import { apiService } from '../../../src/services/apiService';
 
 export function DashboardPage() {
   const navigate = useNavigate();
@@ -27,10 +27,10 @@ export function DashboardPage() {
 
       // Calculate stats
       const totalUsers = users.length;
-      const reportsToday = reports.filter((r: any) => 
+      const reportsToday = reports.filter((r: any) =>
         new Date(r.createdAt).toDateString() === new Date().toDateString()
       ).length;
-      
+
       const uniqueProjects = new Set();
       reports.forEach((r: any) => r.projects.forEach((p: any) => uniqueProjects.add(p.name)));
 
@@ -83,7 +83,7 @@ export function DashboardPage() {
             ))}
           </div>
           <div className="flex justify-between mt-3 text-[11px] text-gray-400 font-medium">
-            {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => <span key={d}>{d}</span>)}
+            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => <span key={d}>{d}</span>)}
           </div>
         </div>
 
