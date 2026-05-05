@@ -1,67 +1,110 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AdminLayout } from '../../components/admin/AdminLayout';
+import { apiService } from '../../../src/services/apiService';
+import toast, { Toaster } from 'react-hot-toast';
 
 export function SettingsPage() {
+  const [tokens, setTokens] = useState<Record<string, string>>({
+    testesfera11: '',
+    webexpertesfera: '',
+    clickripple: '',
+    micaela: '',
+    krunk: ''
+  });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const settings: any = await apiService.getSettings();
+      if (settings.github_tokens) {
+        setTokens(prev => ({ ...prev, ...settings.github_tokens }));
+      }
+    } catch (error) {
+      console.error('Failed to fetch settings:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSaveToken = async (account: string) => {
+    try {
+      const updatedTokens = { ...tokens };
+      await apiService.updateSetting('github_tokens', updatedTokens);
+      toast.success(`Token for ${account} saved successfully`);
+    } catch (error) {
+      toast.error(`Failed to save token for ${account}`);
+    }
+  };
+
+  const handleTokenChange = (account: string, value: string) => {
+    setTokens(prev => ({ ...prev, [account]: value }));
+  };
+
+  const accounts = [
+    { id: 'testesfera11', label: 'testesfera11' },
+    { id: 'webexpertesfera', label: 'webexpertesfera' },
+    { id: 'clickripple', label: 'clickripple' },
+    { id: 'micaela', label: 'micaela' },
+    { id: 'krunk', label: 'krunk' }
+  ];
+
   return (
-    <AdminLayout title="Settings" subtitle="Configure system-wide admin preferences">
-      <div className="max-w-2xl space-y-6">
-        {/* General Settings */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-100">
-            <h3 className="text-sm font-semibold text-gray-900">General Settings</h3>
-            <p className="text-xs text-gray-500 mt-0.5">Manage your basic admin configurations.</p>
-          </div>
-          <div className="p-6 space-y-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label className="block text-xs font-semibold text-gray-600 mb-1.5">Site Name</label>
-                <input
-                  type="text"
-                  defaultValue="ReportPro"
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-600 mb-1.5">Admin Email</label>
-                <input
-                  type="email"
-                  defaultValue="admin@reportpro.com"
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-900 outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
-                />
-              </div>
+    <AdminLayout title="Settings" subtitle="GitHub account tokens (same as Settings page)">
+      <Toaster position="top-right" />
+      <div className="mt-4">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+          {/* Card Header */}
+          <div className="px-8 py-6 border-b border-gray-100 flex items-center gap-3">
+            <div className="p-2 bg-indigo-50 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-key-round">
+                <path d="M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z" />
+                <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" />
+              </svg>
             </div>
+            <h2 className="text-xl font-bold text-gray-800">Account configuration</h2>
+          </div>
 
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <div>
-                <p className="text-sm font-medium text-gray-900">Maintenance Mode</p>
-                <p className="text-xs text-gray-500 mt-0.5">Temporarily disable public access to the dashboard.</p>
+          {/* Card Body */}
+          <div className="p-8">
+            {isLoading ? (
+              <div className="flex justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
               </div>
-              <div className="w-10 h-5 bg-gray-300 rounded-full relative cursor-pointer">
-                <div className="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform" />
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-8">
+                {accounts.map((account) => (
+                  <div key={account.id} className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-600 ml-1">{account.label}</label>
+                    <div className="relative group">
+                      <div className="flex items-center gap-2 bg-[#f8f9fc] border border-gray-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-indigo-500/20 focus-within:border-indigo-500 transition-all">
+                        <input
+                          type="password"
+                          value={tokens[account.id] || ''}
+                          onChange={(e) => handleTokenChange(account.id, e.target.value)}
+                          placeholder="GitHub Personal Access Token"
+                          className="w-full bg-transparent text-gray-700 outline-none text-sm placeholder:text-gray-400"
+                        />
+                        <button
+                          onClick={() => handleSaveToken(account.id)}
+                          className="p-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-lg shadow-blue-500/30 transition-all active:scale-95"
+                          title="Save Token"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-save">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          </div>
-          <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
-            <button className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors">
-              Save Changes
-            </button>
-          </div>
-        </div>
-
-        {/* Danger Zone */}
-        <div className="bg-white rounded-xl shadow-sm border border-red-100 overflow-hidden">
-          <div className="px-6 py-4 border-b border-red-100">
-            <h3 className="text-sm font-semibold text-red-600">Danger Zone</h3>
-            <p className="text-xs text-gray-500 mt-0.5">Irreversible actions for your admin panel.</p>
-          </div>
-          <div className="p-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-900">Purge System Logs</p>
-              <p className="text-xs text-gray-500 mt-0.5">Delete all historical data and activity logs permanently.</p>
-            </div>
-            <button className="px-4 py-2 border border-red-300 text-red-600 hover:bg-red-50 text-sm font-semibold rounded-lg transition-colors">
-              Purge All
-            </button>
+            )}
           </div>
         </div>
       </div>

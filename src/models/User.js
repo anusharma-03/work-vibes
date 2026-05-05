@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true, unique: true },
-    role: { type: String, default: 'Member' },
-    email: { type: String },
+    group: { type: String },
+    team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
+    projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
     createdAt: { type: Date, default: Date.now }
 });
 

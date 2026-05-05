@@ -12,30 +12,13 @@ const apiClient = axios.create({
   }
 });
 
-// Request Interceptor: Attach tokens or other common headers here
-apiClient.interceptors.request.use(
-  (config) => {
-    // Example: Attach an authorization token if available
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
 // Response Interceptor: Centralized error handling and response unwrapping
 apiClient.interceptors.response.use(
   (response) => {
-    // Automatically return response.data to match the original API signature
     return response.data;
   },
   (error) => {
     console.error('API Error:', error.response?.data?.message || error.message);
-    // You can handle global errors here (e.g., redirect to login on 401)
     return Promise.reject(error);
   }
 );
@@ -53,15 +36,44 @@ export const apiService = {
     return await apiClient.get('/users');
   },
 
-  addUser: async (userData: { name: string; role?: string; email?: string }) => {
+  addUser: async (userData: { name: string; group?: string; team?: string; projects?: string[] }) => {
     return await apiClient.post('/users', userData);
   },
-
+  updateUser: async (id: string, userData: { name: string; group?: string; team?: string; projects?: string[] }) => {
+    return await apiClient.put(`/users/${id}`, userData);
+  },
+  deleteUser: async (id: string) => {
+    return await apiClient.delete(`/users/${id}`);
+  },
   getProjects: async () => {
     return await apiClient.get('/projects');
   },
-
-  addProject: async (projectData: { name: string; client: string; team: string; progress: number; status: string }) => {
+  getProject: async (id: string) => {
+    return await apiClient.get(`/projects/${id}`);
+  },
+  addProject: async (projectData: { name: string; account: string; trackingUrl?: string }) => {
     return await apiClient.post('/projects', projectData);
+  },
+  updateProject: async (id: string, projectData: any) => {
+    return await apiClient.put(`/projects/${id}`, projectData);
+  },
+  deleteProject: async (id: string) => {
+    return await apiClient.delete(`/projects/${id}`);
+  },
+
+  getTeams: async () => {
+    return await apiClient.get('/teams');
+  },
+  addTeam: async (teamData: { name: string; users?: string[]; technologies?: string[] }) => {
+    return await apiClient.post('/teams', teamData);
+  },
+  getSettings: async () => {
+    return await apiClient.get('/settings');
+  },
+  updateSetting: async (key: string, value: any) => {
+    return await apiClient.post('/settings', { key, value });
+  },
+  getCommits: async (params: { repoUrl: string; account: string; date: string }) => {
+    return await apiClient.get('/github/commits', { params });
   }
 };

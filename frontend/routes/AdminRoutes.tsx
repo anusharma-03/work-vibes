@@ -7,6 +7,7 @@ const { TeamsPage } = lazyImport(() => import("../pages/admin/TeamsPage"), "Team
 const { HistoryPage } = lazyImport(() => import("../pages/admin/HistoryPage"), "HistoryPage");
 const { SettingsPage } = lazyImport(() => import("../pages/admin/SettingsPage"), "SettingsPage");
 const { StatusAdminPage } = lazyImport(() => import("../pages/admin/StatusAdminPage"), "StatusAdminPage");
+const { EditProjectPage } = lazyImport(() => import("../pages/admin/EditProjectPage"), "EditProjectPage");
 
 export const AdminRoutes = [
   {
@@ -22,6 +23,10 @@ export const AdminRoutes = [
     element: <ProjectsPage />
   },
   {
+    path: "projects/:id/settings",
+    element: <EditProjectPage />
+  },
+  {
     path: "teams",
     element: <TeamsPage />
   },
@@ -35,6 +40,6 @@ export const AdminRoutes = [
   },
   {
     path: "login",
-    element: <StatusAdminPage navigate={() => {}} />
+    element: <StatusAdminPage navigate={() => { }} />
   }
 ];

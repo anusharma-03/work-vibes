@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StatusHeader } from '../components/StatusHeader';
 import { StatusSidebar } from '../components/StatusSidebar';
 import { UserSelectionModal } from '../components/UserSelectionModal';
+import { ProjectAutocomplete } from '../components/ProjectAutocomplete';
 import { apiService } from '../../src/services/apiService';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -11,7 +12,21 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
   const [reportType, setReportType] = useState('SOD');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [projects, setProjects] = useState([{ name: '', tasks: [''] }]);
+  const [availableProjects, setAvailableProjects] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    fetchAvailableProjects();
+  }, []);
+
+  const fetchAvailableProjects = async () => {
+    try {
+      const data = await apiService.getProjects();
+      setAvailableProjects(data);
+    } catch (error) {
+      console.error('Failed to fetch projects:', error);
+    }
+  };
 
   const handleUserConfirm = (name: string) => {
     setUserName(name);
@@ -33,6 +48,44 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
     const newProjects = [...projects];
     newProjects[index].name = name;
     setProjects(newProjects);
+  };
+
+  const handleManualFetch = (index: number) => {
+    const projectName = projects[index].name;
+    const selectedProject = availableProjects.find(p => p.name === projectName);
+    if (selectedProject && selectedProject.trackingUrl) {
+      fetchAndPopulateCommits(index, selectedProject);
+    } else {
+      toast.error('No tracking URL found for this project');
+    }
+  };
+
+  const fetchAndPopulateCommits = async (pIndex: number, project: any) => {
+    try {
+      const commits: any = await apiService.getCommits({
+        repoUrl: project.trackingUrl,
+        account: project.account,
+        date: date
+      });
+
+      if (commits && commits.length > 0) {
+        const newProjects = [...projects];
+        // Only replace tasks if they are empty or just have one empty task
+        if (newProjects[pIndex].tasks.length === 1 && !newProjects[pIndex].tasks[0]) {
+          newProjects[pIndex].tasks = commits;
+        } else {
+          // Otherwise append them
+          newProjects[pIndex].tasks = [...newProjects[pIndex].tasks.filter(t => t), ...commits];
+        }
+        setProjects(newProjects);
+        toast.success(`Fetched ${commits.length} commits for ${project.name}`);
+      } else {
+        toast.error(`No commits found for ${project.name} on ${date}`);
+      }
+    } catch (error: any) {
+      console.error('Failed to fetch commits:', error);
+      toast.error(error.response?.data?.message || 'Failed to fetch commits');
+    }
   };
 
   const updateTaskValue = (pIndex: number, tIndex: number, value: string) => {
@@ -164,11 +217,13 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
                     <div className="space-y-4">
                       <div className="space-y-1">
                         <label className="text-xs font-bold text-gray-400 uppercase">Project Name</label>
-                        <input
+                        <ProjectAutocomplete
                           value={project.name}
-                          onChange={(e) => updateProjectName(pIndex, e.target.value)}
-                          placeholder="Enter project name..."
-                          className="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-2 text-gray-800 focus:ring-2 focus:ring-rose-500 outline-none transition-all"
+                          onChange={(name) => updateProjectName(pIndex, name)}
+                          onFetchGitHub={() => handleManualFetch(pIndex)}
+                          projects={availableProjects}
+                          placeholder="Search or enter project name..."
+                          hasTrackingUrl={!!availableProjects.find(p => p.name === project.name)?.trackingUrl}
                         />
                       </div>
                       <div className="space-y-2">
