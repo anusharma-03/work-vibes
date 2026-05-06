@@ -14,6 +14,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
   const [projects, setProjects] = useState([{ name: '', tasks: [''] }]);
   const [availableProjects, setAvailableProjects] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     fetchAvailableProjects();
@@ -141,6 +142,51 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
       if (i < projects.length - 1) preview += '\n';
     });
     return preview;
+  };
+
+  const copyToClipboard = async () => {
+    const text = generateLivePreview();
+
+    try {
+      // Primary method: Clipboard API
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        setCopied(true);
+        toast.success('Copied to clipboard!');
+        setTimeout(() => setCopied(false), 2000);
+        return;
+      }
+      throw new Error('Clipboard API unavailable');
+    } catch (err) {
+      // Fallback method: execCommand('copy')
+      try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+
+        // Ensure the textarea is not visible
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        textArea.style.top = '0';
+        document.body.appendChild(textArea);
+
+        textArea.focus();
+        textArea.select();
+
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+        if (successful) {
+          setCopied(true);
+          toast.success('Copied to clipboard!');
+          setTimeout(() => setCopied(false), 2000);
+        } else {
+          toast.error('Unable to copy text');
+        }
+      } catch (fallbackErr) {
+        console.error('Copy fallback failed:', fallbackErr);
+        toast.error('Failed to copy text');
+      }
+    }
   };
 
   return (
@@ -277,7 +323,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
               </div>
             </section>
 
-            <button
+            {/* <button
               onClick={handleSubmit}
               disabled={isSubmitting}
               className="w-full bg-rose-600 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:bg-rose-700 transition-all transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3 disabled:opacity-70 disabled:transform-none"
@@ -299,7 +345,7 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
                   Generate & Send Status
                 </>
               )}
-            </button>
+            </button> */}
           </div>
 
           <div className="lg:sticky lg:top-24 h-fit">
@@ -313,13 +359,37 @@ export function StatusWebPage({ navigate }: { navigate?: (path: string) => void 
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-rose-400">Live Preview</h2>
                 <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(generateLivePreview());
-                    toast.success('Copied to clipboard!');
-                  }}
-                  className="text-xs font-medium text-gray-400 hover:text-white transition-colors"
+                  onClick={copyToClipboard}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all duration-300 ${
+                    copied 
+                      ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' 
+                      : 'bg-white/5 border-white/10 text-gray-400 hover:bg-white/10 hover:text-white'
+                  }`}
                 >
-                  Copy
+                  {copied ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-check">
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-copy"
+                    >
+                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                    </svg>
+                  )}
+                  <span className="text-xs font-semibold uppercase tracking-wider">
+                    {copied ? 'Copied' : 'Copy'}
+                  </span>
                 </button>
               </div>
               <div className="relative group">

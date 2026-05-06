@@ -12,13 +12,40 @@ const apiClient = axios.create({
   }
 });
 
+// Request Interceptor: Add Auth Token and Logging
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('adminToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  
+  if (import.meta.env.MODE === 'development') {
+    console.log(`🌐 [API Request] ${config.method?.toUpperCase()} ${config.url}`, config.data || '');
+  }
+  return config;
+});
+
 // Response Interceptor: Centralized error handling and response unwrapping
 apiClient.interceptors.response.use(
   (response) => {
     return response.data;
   },
   (error) => {
-    console.error('API Error:', error.response?.data?.message || error.message);
+    let message = 'An unexpected error occurred';
+    
+    if (error.response) {
+      // Server responded with a status code outside the 2xx range
+      message = error.response.data?.message || error.response.statusText || message;
+    } else if (error.request) {
+      // Request was made but no response was received (Network Error / Server Down)
+      message = 'The server is not responding. Please check if the backend is running.';
+      console.error('Network Error - Connection Refused or Timed Out');
+    } else {
+      // Something happened in setting up the request
+      message = error.message;
+    }
+
+    console.error('API Error:', message);
     return Promise.reject(error);
   }
 );
@@ -75,5 +102,8 @@ export const apiService = {
   },
   getCommits: async (params: { repoUrl: string; account: string; date: string }) => {
     return await apiClient.get('/github/commits', { params });
+  },
+  adminLogin: async (credentials: any) => {
+    return await apiClient.post('/admin/login', credentials);
   }
 };

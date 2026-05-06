@@ -17,15 +17,22 @@ const projectRoutes = require('./routes/projectRoutes');
 const teamRoutes = require('./routes/teamRoutes');
 const settingRoutes = require('./routes/settingRoutes');
 const githubRoutes = require('./routes/githubRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+
+if (process.env.NODE_ENV === 'development') {
+    mongoose.set('debug', true);
+}
 
 // MongoDB Connection
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI);
+        await mongoose.connect(process.env.MONGODB_URI, {
+            serverSelectionTimeoutMS: 5000,
+        });
         console.log('✅ MongoDB Connected successfully');
     } catch (err) {
         console.error('❌ MongoDB Connection Error:', err.message);
-        process.exit(1);
+        console.log('⚠️ Server will continue to run, but database-dependent features will fail.');
     }
 };
 
@@ -36,7 +43,16 @@ app.get('/', (req, res) => {
     res.json({ 
         message: 'Work Vibes API is running...',
         version: '1.0.0',
-        status: 'Healthy'
+        status: mongoose.connection.readyState === 1 ? 'Healthy' : 'Degraded (No DB)'
+    });
+});
+
+// Health Check Route
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'UP',
+        db: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
+        timestamp: new Date().toISOString()
     });
 });
 
@@ -47,10 +63,21 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/teams', teamRoutes);
 app.use('/api/settings', settingRoutes);
 app.use('/api/github', githubRoutes);
+app.use('/api/admin', adminRoutes);
 
 // 404 Handler
 app.use((req, res) => {
     res.status(404).json({ message: 'Route not found' });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+    console.error('🔥 Global Error Handler:', err);
+    res.status(err.status || 500).json({
+        success: false,
+        message: err.message || 'Internal Server Error',
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
 });
 
 // Start Server

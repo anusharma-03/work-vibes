@@ -1,23 +1,26 @@
 const teamService = require('../services/teamService');
 const { sendSuccess, sendError } = require('../utils/responseHandler');
 
-const getTeams = async (req, res) => {
+const getTeams = async (req, res, next) => {
     try {
         const teams = await teamService.getAllTeams();
         sendSuccess(res, teams);
     } catch (err) {
-        sendError(res, err.message, 500);
+        next(err);
     }
 };
 
-const createTeam = async (req, res) => {
+const createTeam = async (req, res, next) => {
     try {
-        console.log('👥 POST /api/teams - Payload:', req.body);
+        console.log('👥 [Team] POST /api/teams - Creating team:', req.body.name);
         const newTeam = await teamService.createTeam(req.body);
-        console.log('✅ Team saved:', newTeam.name);
+        console.log('✅ [Team] Created successfully:', newTeam.name);
         sendSuccess(res, newTeam, 201);
     } catch (err) {
-        sendError(res, err.message, 400);
+        if (err.code === 11000) {
+            return sendError(res, 'Team with this name already exists', 400);
+        }
+        next(err);
     }
 };
 
